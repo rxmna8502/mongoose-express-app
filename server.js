@@ -12,12 +12,11 @@ app.use(express.json());
 // MongoDB connection
 const mongoUrl = process.env.MONGO_FULL_URI;
 
-try {
-  await mongoose.connect(mongoUrl);
-  console.log("Connected to MongoDB");
-} catch (err) {
-  console.error("Failed to connect to MongoDB", err);
-  process.exit(1);
+if (mongoUrl) {
+  mongoose
+    .connect(mongoUrl)
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.error("Failed to connect to MongoDB:", err.message || err));
 }
 
 const movieSchema = new mongoose.Schema({
